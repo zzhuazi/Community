@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title th:text="${article.title}"></title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/common.css" />
+<link rel="stylesheet" href="css/icon.css" />
+<link rel="stylesheet" href="css/link.css" />
+<link rel="stylesheet" href="css/style.css" />
+<style type="text/css">
+textarea.aw-comment-txt {
+	margin: 10px;
+	width: 95%;
+}
+div.aw-comment-box-btn{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+</style>
+</head>
+<body>
+	<header class="aw-top-menu-wrap" th:include="fragments :: header"></header>
+	<section class="aw-container-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="aw-content-wrap clearfix">
+					<div class="col-sm-12 col-md-9 aw-main-content">
+						<div class="aw-mod aw-question-detail aw-item">
+							<div class="mod-head">
+								<h1 th:text="${article.title}"></h1>
+							</div>
+							<div class="mod-body">
+								<div class="content markitup-box">
+									<div th:utext="${article.content}"></div>
+								</div>
+							</div>
+							<div class="mod-footer">
+								<div class="meta">
+									<span class="text-color-999" th:text="${#dates.format(article.publishTime,'yyyy-MM-dd HH:mm:ss')}">2017-12-30 12:06:50</span>
+									<a th:if="${session.user != null}" href="#editor" class="aw-add-comment text-color-999 ">
+										<i class="icon icon-comment"></i>
+										添加评论
+									</a>
+									
+								</div>
+							</div>
+
+						</div>
+
+						<div class="aw-mod aw-question-comment">
+							<div class="mod-head">
+								<ul class="nav nav-tabs aw-nav-tabs active">
+
+									<li class="active"><a>
+											时间
+											<i class="icon icon-up"></i>
+										</a></li>
+
+									<h2 class="hidden-xs" th:text="${article.comments + '条评论'}">4561 个评论</h2>
+								</ul>
+							</div>
+							<div class="mod-body aw-feed-list">
+
+								<div class="aw-item" th:each="comment : ${comments}">
+									<div class="mod-head">
+										<!-- 用户头像 -->
+										<a class="aw-user-img aw-border-radius-5">
+											<img th:src="@{${comment.author.avatar}}" />
+										</a>
+										<!-- end 用户头像 -->
+										<div class="title">
+											<p>
+												<a class="aw-user-name" th:text="${comment.author.name}">xmy</a>
+											</p>
+										</div>
+									</div>
+									<div class="mod-body clearfix">
+										<!-- 评论内容 -->
+										<div class="markitup-box">
+											<div th:utext="${comment.content}">评论内容</div>
+										</div>
+										<!-- end 评论内容 -->
+									</div>
+									<div class="mod-footer">
+										<!-- 社交操作 -->
+										<div class="meta clearfix">
+											<span class="text-color-999 pull-right" th:text="${#dates.format(comment.publishTime,'yyyy-MM-dd HH:mm:ss')}">2017-05-30 12:20:25</span>
+											<span class="operate">
+												<a class="aw-add-comment" href="javascript:;">
+													<i class="icon icon-comment"></i>
+													<span th:text="${comment.replies}"></span>
+												</a>
+											</span>
+											
+
+										</div>
+										<!-- end 社交操作 -->
+										<div class="aw-comment-box" style="display: none;">
+											<div class="aw-comment-list">
+												<ul>
+													<!-- 次评论 -->
+
+
+													<!-- 次评论结束 -->
+
+												</ul>
+												<a class="aw-load-more-content more-replies">
+													<input type="hidden" class="reply-page" value="1" /> <input type="hidden" class="comment-id" th:value="${comment.id}" />
+													<span>更多...</span>
+												</a>
+											</div>
+											<div class="aw-comment-box-main">
+												<input type="hidden" class="reply-id" />
+												<textarea class="aw-comment-txt form-control" rows="2" name="message" placeholder="回复一下..." style="overflow: hidden; word-wrap: break-word; resize: none; height: 34px;"></textarea>
+												<div class="aw-comment-box-btn show">
+													<span class="pull-right">
+														<a href="javascript:;" class="btn btn-mini btn-success reply">回复</a>
+														<a href="javascript:;" class="btn btn-mini btn-gray close-comment-box">取消</a>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+
+							<div class="mod-footer">
+								<a class="aw-load-more-content more-comments" data-page="1" th:if="${comments.size() > 0}">
+									<input type="hidden" id="page" value="1" />
+									<span>更多...</span>
+								</a>
+								<a class="aw-load-more-content more-comments" data-page="0" th:if="${comments.size() == 0}">
+									<input type="hidden" id="page" value="0" />
+									<span>暂无评论</span>
+								</a>
+							</div>
+						</div>
+						<!-- end 问题详细模块 -->
+
+						<!-- 回复编辑器 -->
+						<div class="aw-mod aw-replay-box question" th:if="${null == session.user}">
+							<a name="answer_form"></a>
+							<p align="center">
+								要回复问题请先
+								<a th:href="@{/login}">登录</a>
+								或
+								<a th:href="@{/register}">注册</a>
+							</p>
+						</div>
+						<div class="aw-mod aw-replay-box question" th:if="${null != session.user}">
+							<a></a>
+							<form method="post" class="question_answer_form">
+								<div class="mod-head">
+									<a class="aw-user-name">
+										<img th:src="@{${session.user.avatar}}" />
+									</a>
+								</div>
+								<div class="mod-body">
+									<div class="aw-mod aw-editor-box">
+										<div class="mod-head">
+											<div class="wmd-panel">
+												<div id="cke_wmd-input" class="cke_1 cke cke_reset cke_chrome cke_editor_wmd-input cke_ltr cke_browser_webkit" dir="ltr" lang="zh-cn" role="application" aria-labelledby="cke_wmd-input_arialbl">
+													<div class="cke_inner cke_reset" role="presentation">
+														<div id="cke_1_contents" class="cke_contents cke_reset" role="presentation" style="height: auto;">
+															<script type="text/javascript" src="ueditor/ueditor.config.js"></script>
+															<script src="ueditor/ueditor.all.min.js" type="text/javascript" charset="utf-8"></script>
+															<script src="ueditor/lang/zh-cn/zh-cn.js" type="text/javascript" charset="utf-8"></script>
+															<script id="editor" type="text/plain" style="width: 100%;"></script>
+															<script type="text/javascript">
+																//实例化编辑器
+																//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+																var ue = UE
+																		.getEditor('editor');
+															</script>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="mod-body clearfix">
+											<a href="javascript:;" class="btn btn-normal btn-success pull-right btn-comment">评论</a>
+											<span class="pull-right text-color-999" id="answer_content_message">&nbsp;</span>
+										</div>
+									</div>
+
+								</div>
+							</form>
+						</div>
+						<!-- end 回复编辑器 -->
+
+					</div>
+					<!-- 侧边栏 -->
+					<div class="col-md-3 aw-side-bar hidden-xs hidden-sm">
+						<!-- 作者 -->
+						<div class="aw-mod">
+							<div class="mod-head">
+								<h3>文章作者</h3>
+							</div>
+							<div class="mod-body">
+								<dl>
+									<dt class="pull-left aw-border-radius-5">
+										<a th:href="${'/homepage?userId=' + article.author.id}">
+											<img th:src="@{${article.author.avatar}}" />
+										</a>
+									</dt>
+									<dd class="pull-left">
+										<a th:href="${'/homepage?userId=' + article.author.id}" class="aw-user-name" th:text="${article.author.name}">闲明苑</a>
+										<p th:text="${article.author.introduce}">666</p>
+									</dd>
+								</dl>
+							</div>
+						</div>
+						<!-- end 作者 -->
+						<!-- 文章状态 -->
+						<div class="aw-mod question-status">
+							<div class="mod-head">
+								<h3>文章状态</h3>
+							</div>
+							<div class="mod-body">
+								<ul>
+									<li>最新活动: <span class="aw-text-color-blue" th:text="${#dates.format(article.lastActiveTime,'yyyy-MM-dd HH:mm:ss')}" >2017-07-20 12:30:52</span></li>
+								</ul>
+							</div>
+						</div>
+						<!-- end 文章状态 -->
+					</div>
+					<!-- end 侧边栏 -->
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer class="aw-footer-wrap" th:include="fragments :: footer"></footer>
+</body>
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="js/read-url.js"></script>
+<script type="text/javascript" src="js/jsrender.min.js"></script>
+<script th:inline="javascript">  
+    var online = [[${null != session.user ? true : false}]];  
+</script>
+<script type="text/javascript" src="js/article.js"></script>
+
+</html>
+
+
+<script type="text/x-jsrender" id="comment">
+{{for comments}}
+<div class="aw-item">
+	<div class="mod-head">
+		<!-- 用户头像 -->
+		<a class="aw-user-img aw-border-radius-5">
+			<img src="{{:author.avatar}}" />
+		</a>
+		<!-- end 用户头像 -->
+		<div class="title">
+			<p>
+				<a class="aw-user-name">{{:author.name}}</a>
+			</p>
+		</div>
+	</div>
+	<div class="mod-body clearfix">
+		<!-- 评论内容 -->
+		<div class="markitup-box">
+			<div>{{:content}}</div>
+		</div>
+		<!-- end 评论内容 -->
+	</div>
+	<div class="mod-footer">
+		<!-- 社交操作 -->
+		<div class="meta clearfix">
+			<span class="text-color-999 pull-right" >{{:publishTime}}</span>
+			<span class="operate">
+				<a class="aw-add-comment" href="javascript:;">
+					<i class="icon icon-comment"></i>
+					<span >{{:replies}}</span>
+				</a>
+			</span>
+
+		</div>
+		<!-- end 社交操作 -->
+		<div class="aw-comment-box" style="display: none;">
+			<div class="aw-comment-list">
+				<ul>
+					<!-- 次评论 -->
+
+
+					<!-- 次评论结束 -->
+				</ul>
+				<a class="aw-load-more-content more-replies">
+					<input type="hidden" class="reply-page" value="1" />
+					<input type="hidden" class="comment-id" value="{{:id}}" />
+					<span>更多...</span>
+				</a>
+			</div>
+			{{if #parent.parent.data.online}}
+				<div class="aw-comment-box-main">
+					<input type="hidden" name="replyId" class="reply-id" />
+					<textarea class="aw-comment-txt form-control" rows="2" name="content" placeholder="回复一下..." style="overflow: hidden; word-wrap: break-word; resize: none; height: 34px;"></textarea>
+					<div class="aw-comment-box-btn show">
+						<span class="pull-right">
+							<a href="javascript:;" class="btn btn-mini btn-success reply">回复</a>
+							<a href="javascript:;" class="btn btn-mini btn-gray close-comment-box">清空</a>
+						</span>
+					</div>
+				</div>
+			{{/if}}
+		</div>
+	</div>
+</div>
+{{/for}}
+</script>
+<script type="text/x-jsrender" id="reply">
+{{for replies}}
+<li>
+	<a class="aw-user-name">
+		<img src="{{:author.avatar}}" />
+	</a>
+	<div>
+		<p class="clearfix">
+			<span class="pull-right">
+				&nbsp;
+				{{if #parent.data.online || #parent.parent.data.online}}
+					<a href="javascript:;" data-reply-id="{{:id}}" class="reply-to-reply">回复</a>
+				{{/if}}
+			</span>
+			<a class="aw-user-name author">{{:author.name}}</a>
+			•
+			<span>{{:publishTime}}</span>
+		</p>
+		<p class="clearfix">
+			<!-- 如何是回复回复的则显示-->
+			{{if receiver}}
+			@
+			<a class="receiver-name">{{:receiver.name}}</a>
+			{{/if}}
+			:{{:content}}
+		</p>
+	</div>
+</li>
+{{/for}}
+</script>

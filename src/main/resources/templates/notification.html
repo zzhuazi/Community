@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>通知</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/common.css" />
+<link rel="stylesheet" href="css/icon.css" />
+<link rel="stylesheet" href="css/link.css" />
+<link rel="stylesheet" href="css/style.css" />
+<style type="text/css">
+.my-active {
+	background-color: #ddd !important;
+}
+.my-selected{
+	color: #000;
+}
+</style>
+</head>
+<body>
+	<header class="aw-top-menu-wrap" th:include="fragments :: header"></header>
+	<section class="aw-container-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="aw-content-wrap clearfix">
+					<div class="col-sm-12 col-md-9 aw-main-content">
+						<div class="aw-mod clearfix">
+							<div class="mod-head common-head clearfix">
+								<h2>
+									<span class="pull-right hidden-xs">
+										<a class="btn btn-mini btn-success update-all" th:if="${type == 2}">全部标记已读</a>
+										<a th:classappend="${null == type or type == 2}? 'my-selected'" class="btn btn-mini" th:href="@{/notifications?type=2}">未读通知</a>
+										<a th:classappend="${type == 1}? 'my-selected'" class="btn btn-mini" th:href="@{/notifications?type=1}">已读通知</a>
+										<a th:classappend="${type == 0}? 'my-selected'" class="btn btn-mini" th:href="@{/notifications?type=0}">全部通知</a>
+									</span>
+
+									通知
+								</h2>
+							</div>
+							<div class="mod-body">
+								<div class="aw-notifications-list">
+									<ul id="notifications_list">
+										<li id="notification_166" th:each="notification :${notifications}">
+											<i class="icon-tips" th:if="${!notification.isReaded}"></i>
+											<p class="moreContent" th:utext="${notification.content}"></p>
+											<p class="text-color-999">
+												<span th:text="${#dates.format(notification.publishTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+												<a class="pull-right delete" th:attr="data-id=${notification.id}">删除</a>
+												<a th:if="${type == 2}" class="read pull-right" th:attr="data-id=${notification.id}" style="margin-right: 20px">标为已读</a>
+											</p>
+										</li>
+										<a class="aw-load-more-content" th:if="${notifications.size() == 0}"> 暂无更多此类型通知 </a>
+									</ul>
+								</div>
+							</div>
+							<div class="mod-footer">
+								<div class="page-control">
+									<ul class="pagination pull-right" style="margin-right: 20px;" th:with="url = ${'/notifications?' + (null != type ? 'type=' + type : '') + (null != type ? '&amp;' : '') + 'currentpage='}">
+
+										<li th:if="${page > 1}">
+											<a th:href="@{${url + (page - 1)}}">上一页</a>
+										</li>
+										<li th:if="${page >= 5 and 3 > (total - page) and 4 > ((total - page) + 3)}">
+											<a th:href="@{${url + (page - 4)}}" th:text="${page - 4}">1</a>
+										</li>
+										<li th:if="${page >= 4 and 2 > (total - page)}">
+											<a th:href="@{${url + (page - 3)}}" th:text="${page - 3}">1</a>
+										</li>
+										<li th:if="${page >= 3}">
+											<a th:href="@{${url + (page - 2)}}" th:text="${page - 2}">1</a>
+										</li>
+										<li th:if="${page >= 2}">
+											<a th:href="@{${url + (page - 1)}}" th:text="${page - 1}">2</a>
+										</li>
+										<li>
+											<a class="my-active" th:href="@{${url + page}}" th:text="${page}">3</a>
+										</li>
+										<li th:if="${total - page >= 1}">
+											<a th:href="@{${url + (page + 1)}}" th:text="${page + 1}">4</a>
+										</li>
+										<li th:if="${total - page >= 2}">
+											<a th:href="@{${url + (page + 2)}}" th:text="${page + 2}">4</a>
+										</li>
+										<li th:if="${total - page >= 3 and 2 >= page}">
+											<a th:href="@{${url + (page + 3)}}" th:text="${page + 3}">4</a>
+										</li>
+										<li th:if="${total - page >= 4 and page == 1}">
+											<a th:href="@{${url + (page + 4)}}" th:text="${page + 4}">4</a>
+										</li>
+
+										<li th:if="${total - page >= 1}">
+											<a th:href="@{${url + (page + 1)}}">Next</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 侧边栏 -->
+					<div class="col-md-3 aw-side-bar hidden-xs hidden-sm"></div>
+					<!-- end 侧边栏 -->
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer class="aw-footer-wrap" th:include="fragments :: footer"></footer>
+</body>
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	//1.标记为已读按钮单击事件
+	$("a.read").click(function(){
+		var notificationId = $(this).data('id');
+		$.ajax({
+			type : "post",
+			url : "/notification",
+			async : true,
+			data : {
+				notificationId : notificationId
+			},
+			success : function(data) {
+				if (data['status'] == 'success') {
+					location.reload();
+				}
+			}
+		});
+	});
+	//2.全部标记已读按钮单击事件
+	$("a.update-all").click(function(){
+		$.ajax({
+			type : "post",
+			url : "/notification",
+			async : true,
+			data : {
+				type: 1
+			},
+			success : function(data) {
+				if (data['status'] == 'success') {
+					location.reload();
+				}
+			}
+		});
+	});
+	//3.删除按钮点击事件
+	$("a.delete").click(function(){
+		var notificationId = $(this).data('id');
+		var notificationIds = new Array();
+		notificationIds[0] = notificationId;
+		$.ajax({
+			type : "post",
+			url : "/notification",
+			async : true,
+			data : {
+				_method : 'DELETE',
+				notificationIds:notificationIds
+			},
+			success : function(data) {
+				if (data['status'] == 'success') {
+					location.reload();
+				}
+			}
+		});
+	});
+})
+</script>
+</html>

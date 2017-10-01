@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html class="">
+
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"></meta>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"></meta>
+<title>私信对话: 私信</title>
+
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"></link>
+<link rel="stylesheet" type="text/css" href="css/icon.css"></link>
+
+<link href="css/common.css" rel="stylesheet" type="text/css"></link>
+<link href="css/link.css" rel="stylesheet" type="text/css"></link>
+<link href="css/style.css" rel="stylesheet" type="text/css"></link>
+
+<script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jsrender.min.js"></script>
+<script type="text/javascript" src="js/read-url.js"></script>
+<style type="text/css">
+.fancybox-margin {
+	margin-right: 0px;
+}
+</style>
+<style id="style-1-cropbar-clipper">
+/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+	top: 18px !important;
+	left: 50% !important;
+	margin-left: -100px !important;
+	width: 200px !important;
+	border: 2px rgba(255, 255, 255, .38) solid !important;
+	border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+	margin-left: 0px !important;
+}
+</style>
+<style charset="utf-8" type="text/css" class="firebugResetStyles">
+/* See license.txt for terms of usage */
+/** reset styling **/
+.firebugResetStyles {
+	z-index: 2147483646 !important;
+	top: 0 !important;
+	left: 0 !important;
+	display: block !important;
+	border: 0 none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	outline: 0 !important;
+	min-width: 0 !important;
+	max-width: none !important;
+	min-height: 0 !important;
+	max-height: none !important;
+	position: fixed !important;
+	transform: rotate(0deg) !important;
+	transform-origin: 50% 50% !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	background: transparent none !important;
+	pointer-events: none !important;
+	white-space: normal !important;
+}
+
+style.firebugResetStyles {
+	display: none !important;
+}
+
+.firebugBlockBackgroundColor {
+	background-color: transparent !important;
+}
+
+.firebugResetStyles:before, .firebugResetStyles:after {
+	content: "" !important;
+}
+/**actual styling to be modified by firebug theme**/
+.firebugCanvas {
+	display: none !important;
+}
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBox {
+	width: auto !important;
+	position: static !important;
+}
+
+.firebugLayoutBoxOffset {
+	opacity: 0.8 !important;
+	position: fixed !important;
+}
+
+.firebugLayoutLine {
+	opacity: 0.4 !important;
+	background-color: #000000 !important;
+}
+
+.firebugLayoutLineLeft, .firebugLayoutLineRight {
+	width: 1px !important;
+	height: 100% !important;
+}
+
+.firebugLayoutLineTop, .firebugLayoutLineBottom {
+	width: 100% !important;
+	height: 1px !important;
+}
+
+.firebugLayoutLineTop {
+	margin-top: -1px !important;
+	border-top: 1px solid #999999 !important;
+}
+
+.firebugLayoutLineRight {
+	border-right: 1px solid #999999 !important;
+}
+
+.firebugLayoutLineBottom {
+	border-bottom: 1px solid #999999 !important;
+}
+
+.firebugLayoutLineLeft {
+	margin-left: -1px !important;
+	border-left: 1px solid #999999 !important;
+}
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.firebugLayoutBoxParent {
+	border-top: 0 none !important;
+	border-right: 1px dashed #E00 !important;
+	border-bottom: 1px dashed #E00 !important;
+	border-left: 0 none !important;
+	position: fixed !important;
+	width: auto !important;
+}
+
+.firebugRuler {
+	position: absolute !important;
+}
+
+.firebugRulerH {
+	top: -15px !important;
+	left: 0 !important;
+	width: 100% !important;
+	height: 14px !important;
+	background: url();
+	border-top: 1px solid #BBBBBB !important;
+	border-right: 1px dashed #BBBBBB !important;
+	border-bottom: 1px solid #000000 !important;
+}
+
+.firebugRulerV {
+	top: 0 !important;
+	left: -15px !important;
+	width: 14px !important;
+	height: 100% !important;
+	background: url();
+	border-left: 1px solid #BBBBBB !important;
+	border-right: 1px solid #000000 !important;
+	border-bottom: 1px dashed #BBBBBB !important;
+}
+
+.overflowRulerX>.firebugRulerV {
+	left: 0 !important;
+}
+
+.overflowRulerY>.firebugRulerH {
+	top: 0 !important;
+}
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.fbProxyElement {
+	position: fixed !important;
+	pointer-events: auto !important;
+}
+</style>
+</head>
+
+<body>
+	<!-- 头部 -->
+	<div class="aw-top-menu-wrap" th:include="fragments :: header"></div>
+	<!-- end 头部 -->
+	<div class="aw-container-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="aw-content-wrap clearfix">
+					<div class="col-sm-12 col-md-9 aw-main-content">
+						<div class="aw-mod aw-inbox-read">
+							<div class="mod-head common-head">
+								<h2>
+									<a href="chats" class="pull-right">返回私信列表 »</a>
+									<a th:text="'私信对话：'+ ${messageVOs[0].receiver.name}" />
+								</h2>
+							</div>
+							<div class="mod-body">
+								<!-- 私信内容输入框　-->
+								<form action="message" method="post">
+									<a href="#" data-id="245" class="aw-user-img aw-border-radius-5">
+										<img th:src="${userVO.avatar}" alt="" />
+									</a>
+									<input name="receiverId" th:value="${messageVOs[0].receiverId}" type="hidden" />
+									<textarea rows="3" class="form-control" placeholder="想要对ta说点什么?" type="text" name="message"></textarea>
+									<div class="form-group">
+										<input type="submit" class="btn btn-mini btn-success" value="发送" style="margin-top: 5px" />
+									</div>
+								</form>
+								<!-- end 私信内容输入框 -->
+							</div>
+							<div class="mod-footer aw-feed-list">
+								<!-- 私信内容列表 -->
+								<a name="contents"></a>
+								<ul class="aw-feed-list">
+									<li th:each="messageVO:${messageVOs}" th:class="${messageVO.senderId == messageVO.receiver.id} ? 'active':''">
+										<a href="#" data-id="245" class="aw-user-img aw-border-radius-5">
+											<img th:src="${messageVO.senderId == messageVO.receiver.id} ? ${messageVO.receiver.avatar} : ${userVO.avatar}" alt="a" />
+										</a>
+										<div class="aw-item">
+											<p>
+												<a href="#" th:text="${messageVO.senderId == messageVO.receiver.id} ? ${messageVO.receiver.name} : '我'"></a>
+												:
+											<p th:text="${messageVO.content}" />
+											</p>
+											<p class="text-color-999">
+												<span class="pull-right aw-replay">
+													<a href="javascript:;" th:text="${messageVO.senderId == messageVO.receiver.id} ? '回复' : ''"></a>
+												</span>
+											<p th:text="${#dates.format(messageVO.sendTime,'yyyy-MM-dd HH:mm:ss')}" />
+											</p>
+											<i class="i-private-replay-triangle"></i>
+										</div>
+									</li>
+								</ul>
+								<!-- end 私信内容列表 -->
+							</div>
+							<div class="mod-footer">
+								<a class="aw-load-more-content more-messages" data-page="1" th:if="${messageVOs.size() > 0}">
+									<input type="hidden" id="page" value="1" />
+									<span>更多...</span>
+								</a>
+								<a class="aw-load-more-content more-messages" data-page="0" th:if="${messageVOs.size() == 0}">
+									<input type="hidden" id="page" value="0" />
+									<span>暂无评论</span>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<!-- 侧边栏 -->
+					<div class="col-sm-12 col-md-3 aw-side-bar hidden-xs hidden-sm"></div>
+					<!-- end 侧边栏 -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 底部 -->
+	<div class="aw-footer-wrap" th:include="fragments :: footer"></div>
+	<!-- end 底部 -->
+</body>
+<script th:inline="javascript">  
+    var online = [[${null != session.user ? true : false}]]; 
+    var userAvatar = [[${userVO.avatar}]];
+</script>
+
+<script type="text/x-jsrender" id="message">
+{{for messageVOs}}
+		<li class="{{if senderId == receiver.id }}active{{/if}}">
+			<a href="#"  class="aw-user-img aw-border-radius-5">
+				<img src="{{:#parent.parent.data.userAvatar}}" alt="a" />
+			</a>
+			<div class="aw-item">
+				<p>
+					<a href="#">
+						{{if senderId == receiver.id }}
+							{{:receiver.name}}
+						{{else}}
+							我
+						{{/if}}
+					</a>:
+					<p>{{:content}}</p>
+				</p>
+				<p class="text-color-999">
+					<span class="pull-right aw-replay"> 
+						<a href="javascript:;">
+							{{if senderId == receiver.id}}
+								回复
+							{{/if}}
+						</a>
+					</span>
+					<p> {{:sendTime}}</p>
+				</p>
+				<i class="i-private-replay-triangle"></i>
+			</div>
+		</li>
+{{/for}}
+
+</script>
+<script type="text/javascript">
+$(function(){
+	//更多私信点击事件
+	$("a.more-messages").click(function(){
+		var page = $("#page").val();
+		page++;
+		console.log(userAvatar);
+		if(page == 1){
+			$(this).find("span").text("暂无更多私信");
+			return;
+		}
+		$.ajax({
+			type : "post",
+			url : "/messages",
+			data : {
+				currentPage : page,
+				receiverId : request['receiverId']
+			},
+			success: function(data){
+				console.log(data);
+				if(data['stauts'] == 'success'){
+					var messages = data['messageVOs'];
+					var html = $("#message").render({"messageVOs": messages, "online": online, "userAvatar" : userAvatar});
+					$("ul.aw-feed-list").append(html);
+					$("#page").val(data["page"]);
+				}else{
+					alert("请求失败");
+				}
+			}
+			
+		});
+	});
+});
+</script>
+</html>

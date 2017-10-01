@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/common.css" />
+<link rel="stylesheet" href="css/icon.css" />
+<link rel="stylesheet" href="css/link.css" />
+<script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="js/bootstrap.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="css/style.css" />
+<script type="text/javascript" src="js/jsrender.min.js"></script>
+<script type="text/javascript">
+	function sendMessage(userId, userName) {
+		$("#receiverId").attr("value", userId);
+		$("#receiverName").text("发送至："+userName);
+		$("#sendMessage").modal({
+			backdrop : "static"
+		});
+	}
+	var total = 1;
+</script>
+</head>
+<body>
+<!-- 模态框 -->
+	<!-- Modal -->
+	<div class="modal fade" id="sendMessage" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">提示</h4>
+				</div>
+				<form class="form-horizontal" role="form" action="message" method="post">
+				<div class="modal-body">
+					<!-- 添加一个表单 -->
+						<input id="receiverId" name="receiverId" value="" type="hidden"/>
+						<h3 id="receiverName" ></h3>
+						<textarea class="form-control" name="message" rows="3"
+							placeholder="私信内容..."></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<input class="btn btn-primary" type="submit" value="发送私信"/>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!--end 模态框-->
+	<header class="aw-top-menu-wrap" th:include="fragments :: header"></header>
+	<section class="aw-container-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="aw-content-wrap clearfix">
+					<div class="col-sm-12 col-md-9 aw-main-content">
+						<div class="aw-mod">
+							<div class="mod-head common-head">
+								<h2>
+									<i class="icon icon-users"></i>
+									用户推荐
+								</h2>
+							</div>
+							<div class="mod-body aw-people-list">
+								<div class="aw-item" th:each="user,userStat : ${users}">
+									<span class="aw-user-sort-count aw-border-radius-5 active">
+										<i class="icon icon-flag"></i>
+										<em id="index" th:text="${userStat.index+1}"></em>
+									</span>
+									<a class="aw-user-img aw-border-radius-5">
+										<img width="50px" height="50px" th:src="@{${user.avatar}}" />
+									</a>
+									<p class="text-color-999 title">
+										<a class="aw-user-name" th:text="${user.name}" th:href="@{'homepage?userId='+${user.id}}"></a>
+										<i class="icon-v i-ve"></i>
+									</p>
+									<p class="text-color-999 signature" th:text="'&nbsp;'+${user.introduce}"></p>
+
+									<div class="operate" th:if="${null != session.user}">
+										<input type="hidden" class="author-id" />
+										<a class="text-color-999 new-message" href="javascript:void(0)"
+									data-toggle="modal"
+									th:onclick="'javascript:sendMessage('+${user.Id}+ ',\'' + ${user.name}+'\');'" >私信</a>
+									</div>
+								</div>
+							</div>
+							<div class="mod-footer">
+								<a class="aw-load-more-content more-users" data-page="1"
+									th:if="${users.size() > 0}"> <input type="hidden"
+									id="page" value="1" /> <span>更多...</span>
+								</a> <a class="aw-load-more-content more-users" data-page="0"
+									th:if="${users.size() == 0}"> <input type="hidden"
+									id="page" value="0" /> <span>暂无更多用户</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer class="aw-footer-wrap" th:include="fragments :: footer"></footer>
+</body>
+<script th:inline="javascript">  
+    var online = [[${null != session.user ? true : false}]];  
+</script>
+<script type="text/javascript">
+$(function(){
+	//更多用户点击事件
+	$("a.more-users").click(function(){
+		var page = $("#page").val();
+		total = page*5 + 1;
+		page++;
+		console.log(page);
+		if(page == 1){
+			$(this).find("span").text("暂无更多用户");
+			return;
+		}
+		$.ajax({
+			type : "post",
+			url : "/users",
+			data : {
+				currentPage : page,
+			},
+			success: function(data){
+				console.log(data);
+				if(data['stauts'] == 'success'){
+					var users = data['users'];
+					var html = $("#user").render({"users": users, "total" : total, "online":online});
+					$("div.aw-people-list").append(html);
+					$("#page").val(data["page"]);
+				}else{
+					alert("请求失败");
+				}
+			}
+			
+		});
+	});
+});
+</script>
+<script type="text/x-jsrender" id="user">
+{{for users}}
+<div class="aw-item">
+	<span class="aw-user-sort-count aw-border-radius-5 active">
+		<i class="icon icon-flag"></i>
+		<em>{{:#parent.parent.data.total+#index}}</em>
+	</span>
+	<a class="aw-user-img aw-border-radius-5">
+		<img width="50px" height="50px" src="{{:avatar}}" />
+	</a>
+	<p class="text-color-999 title">
+		<a class="aw-user-name" href="homepage?userId={{:id}}">{{:name}}</a>
+		<i class="icon-v i-ve"></i>
+	</p>
+	<p class="text-color-999 signature">&nbsp;{{:introduce}}</p>
+	{{if #parent.parent.data.online}}
+	<div class="operate">
+		<input type="hidden" class="author-id" />
+		<a class="text-color-999 new-message" href="javascript:void(0)" data-toggle="modal"
+			onclick="javascript:sendMessage({{:id}}, '{{:name}}');" >私信</a>
+	</div>
+	{{/if}}
+</div>
+{{/for}}
+</script>
+</html>

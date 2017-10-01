@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title th:text="${section.name}"></title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/common.css" />
+<link rel="stylesheet" href="css/icon.css" />
+<link rel="stylesheet" href="css/link.css" />
+<link rel="stylesheet" href="css/style.css" />
+<style type="text/css">
+div.introduce {
+	position: absolute;
+	bottom: -20px;
+}
+</style>
+</head>
+<body>
+	<header class="aw-top-menu-wrap" th:include="fragments :: header"></header>
+	<section class="aw-container-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="aw-content-wrap clearfix">
+					<div class="col-sm-12 col-md-9 aw-main-content">
+						<div class="aw-mod aw-topic-detail-title" style="position: relative;">
+							<div class="mod-body">
+								<img th:src="@{${section.avatar}}" width="50px" height="50px" />
+								<h2 class="pull-left" th:text="${section.name}"></h2>
+								<div class="introduce" th:text="${section.introduce}"></div>
+								<div style="clear: both;"></div>
+							</div>
+						</div>
+
+						<div class="aw-mod aw-topic-list-mod">
+							<div class="mod-head">
+								<div class="tabbable">
+									<!-- tab 切换 -->
+									<ul class="nav nav-tabs aw-nav-tabs hidden-xs">
+										<li class="active">
+											<a>全部内容</a>
+										</li>
+										<div class="aw-search-bar pull-right hidden-xs">
+											<form th:object="${article}">
+												<input type="hidden" name="sectionId" th:field="*{sectionId}" />
+												<input type="hidden" name="currentpage" th:value="${page}" />
+												<i class="icon icon-search"></i>
+												<input type="text" name="title" th:field="*{title}" class="search-query form-control" placeholder="搜索..." />
+											</form>
+										</div>
+									</ul>
+									<!-- end tab 切换 -->
+								</div>
+							</div>
+
+							<div class="mod-body">
+								<!-- tab 切换内容 -->
+								<div class="tab-content">
+									<div class="tab-pane active">
+										<!-- 推荐问题 -->
+										<!-- end 推荐问题 -->
+										<div class="aw-mod">
+											<div class="mod-body">
+												<div class="aw-common-list">
+
+													<div class="aw-item active" th:each="article : ${articles}">
+														<a class="aw-user-name hidden-xs" th:href="@{'/homepage?userId=' + ${article.userId}}">
+															<img th:src="@{${article.author.avatar}}" />
+															<i class="icon icon-v i-ve"></i>
+														</a>
+														<div class="aw-question-content">
+															<h4>
+																<a th:href="@{'/article?articleId=' + ${article.id}}" th:text="${article.title}"></a>
+															</h4>
+															<a class="pull-right text-color-999">回复</a>
+															<p>
+																<a class="aw-question-tags" th:text="${section.name}"></a>
+																<span class="text-color-999" th:text="${'•' + article.comments + '个回复'}"> • 6000 个回复 • 300 次浏览 • 2014-04-10 12:30:52 </span>
+															</p>
+
+														</div>
+													</div>
+													<div style="padding-top: 20px; padding-bottom: 20px;" class="text-center" th:if="${articles.size() == 0}">该版块暂无文章哦！</div>
+												</div>
+											</div>
+											<div class="mod-footer">
+												<div class="page-control">
+													<ul class="pagination pull-right" style="margin-right: 20px;" th:with="url = ${'/section?sectionId=' + section.id + 'currentpage='}">
+
+														<li th:if="${page > 1}">
+															<a th:href="@{${url + (page - 1)}}">上一页</a>
+														</li>
+														<li th:if="${page >= 5 and 3 > (total - page) and 4 > ((total - page) + 3)}">
+															<a th:href="@{${url + (page - 4)}}" th:text="${page - 4}">1</a>
+														</li>
+														<li th:if="${page >= 4 and 2 > (total - page)}">
+															<a th:href="@{${url + (page - 3)}}" th:text="${page - 3}">1</a>
+														</li>
+														<li th:if="${page >= 3}">
+															<a th:href="@{${url + (page - 2)}}" th:text="${page - 2}">1</a>
+														</li>
+														<li th:if="${page >= 2}">
+															<a th:href="@{${url + (page - 1)}}" th:text="${page - 1}">2</a>
+														</li>
+														<li>
+															<a class="my-active" th:href="@{${url + page}}" th:text="${page}">3</a>
+														</li>
+														<li th:if="${total - page >= 1}">
+															<a th:href="@{${url + (page + 1)}}" th:text="${page + 1}">4</a>
+														</li>
+														<li th:if="${total - page >= 2}">
+															<a th:href="@{${url + (page + 2)}}" th:text="${page + 2}">4</a>
+														</li>
+														<li th:if="${total - page >= 3 and 2 >= page}">
+															<a th:href="@{${url + (page + 3)}}" th:text="${page + 3}">4</a>
+														</li>
+														<li th:if="${total - page >= 4 and page == 1}">
+															<a th:href="@{${url + (page + 4)}}" th:text="${page + 4}">4</a>
+														</li>
+
+														<li th:if="${total - page >= 1}">
+															<a th:href="@{${url + (page + 1)}}">Next</a>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+								<!-- end tab 切换内容 -->
+							</div>
+						</div>
+					</div>
+
+					<!-- 侧边栏 -->
+					<div class="col-md-3 aw-side-bar hidden-xs hidden-sm">
+						<div class="aw-mod side-nav">
+							<div class="mod-body">
+								<ul>
+									<li>
+										<a href="users">
+											<i class="icon icon-user"></i>
+											所有用户
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- end 侧边栏 -->
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer class="aw-footer-wrap" th:include="fragments :: footer"></footer>
+</body>
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	//1.搜索图标点击事件
+	$("i.icon-search").click(function(){
+		console.log("搜索图标点击事件");
+		$("form").submit();
+	});
+	//2.
+})
+</script>
+</html>

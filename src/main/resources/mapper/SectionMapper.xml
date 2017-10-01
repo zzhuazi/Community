@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.dao.SectionMapper">
+	<resultMap id="BaseResultMap" type="com.dgut.po.Section">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+		<result column="articles" property="articles" jdbcType="INTEGER" />
+		<result column="last_publish_article_time" property="lastPublishArticleTime"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, name, avatar, introduce, articles,
+		last_publish_article_time
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.dgut.po.SectionExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from section
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from section
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		section
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.dgut.po.SectionExample">
+		delete from section
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.dgut.po.Section">
+		insert into section (id, name,
+		avatar,
+		introduce, articles, last_publish_article_time
+		)
+		values
+		(#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{avatar,jdbcType=VARCHAR},
+		#{introduce,jdbcType=VARCHAR},
+		#{articles,jdbcType=INTEGER},
+		#{lastPublishArticleTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.dgut.po.Section">
+		insert into section
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="avatar != null">
+				avatar,
+			</if>
+			<if test="introduce != null">
+				introduce,
+			</if>
+			<if test="articles != null">
+				articles,
+			</if>
+			<if test="lastPublishArticleTime != null">
+				last_publish_article_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="avatar != null">
+				#{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="introduce != null">
+				#{introduce,jdbcType=VARCHAR},
+			</if>
+			<if test="articles != null">
+				#{articles,jdbcType=INTEGER},
+			</if>
+			<if test="lastPublishArticleTime != null">
+				#{lastPublishArticleTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.dgut.po.SectionExample"
+		resultType="java.lang.Integer">
+		select count(*) from section
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update section
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.name != null">
+				name = #{record.name,jdbcType=VARCHAR},
+			</if>
+			<if test="record.avatar != null">
+				avatar = #{record.avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="record.introduce != null">
+				introduce = #{record.introduce,jdbcType=VARCHAR},
+			</if>
+			<if test="record.articles != null">
+				articles = #{record.articles,jdbcType=INTEGER},
+			</if>
+			<if test="record.lastPublishArticleTime != null">
+				last_publish_article_time =
+				#{record.lastPublishArticleTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update section
+		set id = #{record.id,jdbcType=INTEGER},
+		name =
+		#{record.name,jdbcType=VARCHAR},
+		avatar =
+		#{record.avatar,jdbcType=VARCHAR},
+		introduce =
+		#{record.introduce,jdbcType=VARCHAR},
+		articles =
+		#{record.articles,jdbcType=INTEGER},
+		last_publish_article_time =
+		#{record.lastPublishArticleTime,jdbcType=TIMESTAMP}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dgut.po.Section">
+		update section
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="avatar != null">
+				avatar = #{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="introduce != null">
+				introduce = #{introduce,jdbcType=VARCHAR},
+			</if>
+			<if test="articles != null">
+				articles = #{articles,jdbcType=INTEGER},
+			</if>
+			<if test="lastPublishArticleTime != null">
+				last_publish_article_time =
+				#{lastPublishArticleTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dgut.po.Section">
+		update section
+		set
+		name = #{name,jdbcType=VARCHAR},
+		avatar = #{avatar,jdbcType=VARCHAR},
+		introduce = #{introduce,jdbcType=VARCHAR},
+		articles =
+		#{articles,jdbcType=INTEGER},
+		last_publish_article_time =
+		#{lastPublishArticleTime,jdbcType=TIMESTAMP}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- ****************************** -->
+	<resultMap type="com.dgut.vo.SectionVO" id="SectionVOResultMap"
+		extends="BaseResultMap">
+	</resultMap>
+	<select id="selectSectionVOs" resultMap="SectionVOResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from section
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+		<if test="time != null and time">
+			order by last_publish_article_time desc
+		</if>
+		<if test="page != null">
+			limit #{page.start,jdbcType=INTEGER}, #{page.size,jdbcType=INTEGER}
+		</if>
+	</select>
+</mapper>

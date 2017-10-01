@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/common.css" />
+<link rel="stylesheet" href="css/icon.css" />
+<link rel="stylesheet" href="css/link.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/user-setting.css" />
+<style type="text/css">
+#avatar_uploader {
+	position: relative;
+	display: inline-block;
+	background: #D0EEFF;
+	border: 1px solid #99D3F5;
+	border-radius: 4px;
+	overflow: hidden;
+	color: #1E88C7;
+	text-decoration: none;
+	text-indent: 0;
+	line-height: 20px;
+}
+
+#avatar_uploader input {
+	position: absolute;
+	font-size: 100px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+}
+</style>
+</head>
+<body>
+	<header class="aw-top-menu-wrap" th:include="fragments :: header"></header>
+	<section class="aw-container-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="aw-content-wrap clearfix">
+					<div class="aw-user-setting">
+						<div class="tabbable">
+							<ul class="nav nav-tabs aw-nav-tabs active">
+								<li>
+									<a href="">修改密码</a>
+								</li>
+								<li>
+									<a href="">隐私/提醒</a>
+								</li>
+								<li class="active">
+									<a href="">基本资料</a>
+								</li>
+
+								<h2>
+									<i class="icon icon-setting"></i>
+									用户设置
+								</h2>
+							</ul>
+						</div>
+
+						<form action="" th:object="${profile}" method="post">
+							<div class="tab-content clearfix">
+								<!-- 基本信息 -->
+								<div class="aw-mod">
+									<div class="mod-body">
+										<div class="aw-mod mod-base">
+											<div class="mod-head">
+												<h3>基本信息</h3>
+											</div>
+											<div class="mod-body">
+												<dl>
+													<dt>账号:</dt>
+													<dd th:text="${userVo.name}">用户名</dd>
+												</dl>
+												<dl>
+													<dt>邮箱:</dt>
+													<dd th:text="${userVo.email}"></dd>
+												</dl>
+												<dl>
+													<dt>性别:</dt>
+													<dd>
+														<label>
+															<input name="sex" value="男" type="radio" th:field="*{sex}" />
+															男
+														</label>
+														<label>
+															<input name="sex" value="女" type="radio" th:field="*{sex}" />
+															女
+														</label>
+														<label>
+															<input name="sex" value="保密" type="radio" th:field="*{sex}" />
+															保密
+														</label>
+													</dd>
+												</dl>
+												<dl>
+													<dt>
+														<label>介绍:</label>
+													</dt>
+													<dd class="introduce">
+														<input class="form-control" maxlength="128" type="text" th:field="*{introduce}" />
+													</dd>
+												</dl>
+
+												<!-- 上传头像 -->
+												<div class="side-bar">
+													<dl>
+														<dt class="pull-left">
+															<input type="hidden" name="avatar" class="avatar" />
+															<img class="aw-border-radius-5" th:src="@{${userVo.avatar}}" width="100" height="100" />
+														</dt>
+														<dd class="pull-left">
+															<h5>头像设置</h5>
+															<p>支持 jpg、gif、png 等格式的图片</p>
+															<a class="btn btn-mini btn-success" id="avatar_uploader" href="javascript:;">
+																<input name="file" type="file" id="file"  />
+																上传头像
+															</a>
+
+														</dd>
+													</dl>
+												</div>
+												<!-- end 上传头像 -->
+											</div>
+										</div>
+										<!-- end 基本信息 -->
+
+										<!-- 联系方式 -->
+										<div class="aw-mod mod-contact">
+											<div class="mod-head">
+												<h3>联系方式</h3>
+											</div>
+											<div class="mod-body clearfix">
+												<ul>
+													<li>
+														<label for="input-qq">手机号码 :</label>
+														<input class="form-control" type="text" th:field="*{phone}" />
+													</li>
+												</ul>
+											</div>
+										</div>
+										<!-- end 联系方式 -->
+									</div>
+									<div class="mod-footer clearfix">
+										<input type="submit" class="btn btn-large btn-success pull-right" value="保存" />
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer class="aw-footer-wrap" th:include="fragments :: footer"></footer>
+</body>
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="js/profile.js"></script>
+</html>

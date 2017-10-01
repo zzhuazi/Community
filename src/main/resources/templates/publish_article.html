@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>发表文章</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/common.css" />
+<link rel="stylesheet" href="css/icon.css" />
+<link rel="stylesheet" href="css/link.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+	<header class="aw-top-menu-wrap" th:include="fragments :: header"></header>
+	<section class="aw-container-wrap">
+		<div class="container aw-publish">
+			<div class="row">
+				<div class="aw-content-wrap clearfix">
+					<div class="col-sm-12 col-md-9 aw-main-content">
+						<!-- tab 切换 -->
+						<ul class="nav nav-tabs aw-nav-tabs active">
+							<li class="active"><a>文章</a></li>
+							<h2 class="hidden-xs">
+								<i class="icon icon-ask"></i>
+								发表
+							</h2>
+						</ul>
+						<!-- end tab 切换 -->
+						<form method="post">
+							<select name="category_id" class="hide" id="category_id">
+								<option value="0">- -- -</option>
+							</select>
+							<div class="aw-mod aw-mod-publish">
+								<div class="mod-body">
+									<h3>文章标题:</h3>
+									<div class="aw-publish-title">
+										<div>
+											<input type="text" placeholder="文章标题..." class="form-control title" id="title" />
+										</div>
+										<div class="dropdown">
+											<div class="dropdown-toggle" data-toggle="dropdown">
+												<input type="hidden" id="sectionId" />
+												<span id="aw-topic-tags-select" class="aw-hide-txt">选择版块</span>
+												<a href="javascript:;">
+													<i class="icon icon-down"></i>
+												</a>
+											</div>
+											<div aria-labelledby="dropdownMenu" role="menu" class="aw-dropdown">
+												<ul class="aw-dropdown-list">
+													<li th:each="section : ${sections}">
+														<a th:attr ="data-sectionid=${section.id}" th:text="${section.name}">默认分类</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<!-- end 文章标题 -->
+
+									<h3>文章内容:</h3>
+									<div class="aw-mod aw-editor-box">
+										<div class="mod-head">
+											<div class="wmd-panel">
+												<div id="cke_wmd-input" class="cke_1 cke cke_reset cke_chrome cke_editor_wmd-input cke_ltr cke_browser_webkit" dir="ltr" lang="zh-cn" role="application" aria-labelledby="cke_wmd-input_arialbl">
+													<div class="cke_inner cke_reset" role="presentation">
+														<div class="cke_contents cke_reset" style="height: auto;">
+															<script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
+															<script src="/ueditor/ueditor.all.min.js" type="text/javascript" charset="utf-8"></script>
+															<script src="/ueditor/lang/zh-cn/zh-cn.js" type="text/javascript" charset="utf-8"></script>
+															<script id="editor" type="text/plain" style="width: 100%; min-height: 400px;"></script>
+															<script type="text/javascript">
+																//实例化编辑器
+																//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+																var ue = UE
+																		.getEditor('editor');
+															</script>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+
+								</div>
+								<div class="mod-footer clearfix">
+
+									<a class="btn btn-large btn-success btn-publish-submit">确认发表</a>
+								</div>
+							</div>
+						</form>
+					</div>
+					<!-- 侧边栏 -->
+					<div class="col-md-3 aw-side-bar hidden-xs hidden-sm"></div>
+
+					<!-- end 侧边栏 -->
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer class="aw-footer-wrap" th:include="fragments :: footer"></footer>
+</body>
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		//发表按钮点击事件
+		$(".btn-publish-submit").click(
+				function() {
+					var title = $("#title").val();
+					var sectionId = $("#sectionId").val();
+					var content = UE.getEditor('editor').getContent();
+					console.log(title);
+					console.log(sectionId);
+					$.ajax({
+						type : "post",
+						url : "/publishArticle",
+						async : true,
+						data : {
+							title : title,
+							sectionId : sectionId,
+							content : content
+						},
+						success : function(data) {
+							console.log(data);
+							if (data['status'] == 'success') {
+								window.location = "/article?articleId="
+										+ data['articleId'];
+							}
+						}
+					});
+				});
+		//分类li 点击事件
+		$("div.aw-dropdown>ul.aw-dropdown-list>li>a").click(function() {
+			var sectionId = $(this).data("sectionid");
+			$("#aw-topic-tags-select").text($(this).text());
+			$("#sectionId").val(sectionId);
+		});
+	})
+</script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+</html>

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.dao.ChatMapper">
+	<resultMap id="BaseResultMap" type="com.dgut.po.Chat">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="messages" property="messages" jdbcType="INTEGER" />
+		<result column="last_active_content" property="lastActiveContent"
+			jdbcType="VARCHAR" />
+		<result column="last_active_time" property="lastActiveTime"
+			jdbcType="TIMESTAMP" />
+		<result column="unread" property="unread" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="receiver_id" property="receiverId" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, messages, last_active_content, last_active_time, unread, user_id,
+		receiver_id
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.dgut.po.ChatExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from chat
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from chat
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from chat
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.dgut.po.ChatExample">
+		delete from chat
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.dgut.po.Chat">
+		insert into chat (id, messages, last_active_content,
+		last_active_time, unread, user_id,
+		receiver_id)
+		values (#{id,jdbcType=INTEGER}, #{messages,jdbcType=INTEGER},
+		#{lastActiveContent,jdbcType=VARCHAR},
+		#{lastActiveTime,jdbcType=TIMESTAMP}, #{unread,jdbcType=INTEGER},
+		#{userId,jdbcType=INTEGER},
+		#{receiverId,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dgut.po.Chat">
+		insert into chat
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="messages != null">
+				messages,
+			</if>
+			<if test="lastActiveContent != null">
+				last_active_content,
+			</if>
+			<if test="lastActiveTime != null">
+				last_active_time,
+			</if>
+			<if test="unread != null">
+				unread,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="receiverId != null">
+				receiver_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="messages != null">
+				#{messages,jdbcType=INTEGER},
+			</if>
+			<if test="lastActiveContent != null">
+				#{lastActiveContent,jdbcType=VARCHAR},
+			</if>
+			<if test="lastActiveTime != null">
+				#{lastActiveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="unread != null">
+				#{unread,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="receiverId != null">
+				#{receiverId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.dgut.po.ChatExample"
+		resultType="java.lang.Integer">
+		select count(*) from chat
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update chat
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.messages != null">
+				messages = #{record.messages,jdbcType=INTEGER},
+			</if>
+			<if test="record.lastActiveContent != null">
+				last_active_content = #{record.lastActiveContent,jdbcType=VARCHAR},
+			</if>
+			<if test="record.lastActiveTime != null">
+				last_active_time = #{record.lastActiveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.unread != null">
+				unread = #{record.unread,jdbcType=INTEGER},
+			</if>
+			<if test="record.userId != null">
+				user_id = #{record.userId,jdbcType=INTEGER},
+			</if>
+			<if test="record.receiverId != null">
+				receiver_id = #{record.receiverId,jdbcType=INTEGER},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update chat
+		set id = #{record.id,jdbcType=INTEGER},
+		messages = #{record.messages,jdbcType=INTEGER},
+		last_active_content = #{record.lastActiveContent,jdbcType=VARCHAR},
+		last_active_time = #{record.lastActiveTime,jdbcType=TIMESTAMP},
+		unread = #{record.unread,jdbcType=INTEGER},
+		user_id = #{record.userId,jdbcType=INTEGER},
+		receiver_id = #{record.receiverId,jdbcType=INTEGER}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dgut.po.Chat">
+		update chat
+		<set>
+			<if test="messages != null">
+				messages = #{messages,jdbcType=INTEGER},
+			</if>
+			<if test="lastActiveContent != null">
+				last_active_content = #{lastActiveContent,jdbcType=VARCHAR},
+			</if>
+			<if test="lastActiveTime != null">
+				last_active_time = #{lastActiveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="unread != null">
+				unread = #{unread,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="receiverId != null">
+				receiver_id = #{receiverId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dgut.po.Chat">
+		update chat
+		set messages = #{messages,jdbcType=INTEGER},
+		last_active_content = #{lastActiveContent,jdbcType=VARCHAR},
+		last_active_time = #{lastActiveTime,jdbcType=TIMESTAMP},
+		unread = #{unread,jdbcType=INTEGER},
+		user_id = #{userId,jdbcType=INTEGER},
+		receiver_id = #{receiverId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- ******************************************************* -->
+	<resultMap type="com.dgut.vo.ChatVO" id="ChatVOResultMap"
+		extends="BaseResultMap">
+		<association property="receiver" javaType="com.dgut.po.User">
+			<id column="receiver_id" property="id" jdbcType="INTEGER" />
+			<result column="name" property="name" jdbcType="VARCHAR" />
+			<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+			<result column="email" property="email" jdbcType="VARCHAR" />
+			<result column="password" property="password" jdbcType="VARCHAR" />
+			<result column="sex" property="sex" jdbcType="VARCHAR" />
+			<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+			<result column="phone" property="phone" jdbcType="VARCHAR" />
+			<result column="articles" property="articles" jdbcType="INTEGER" />
+			<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+	<select id="selectChatVOs" resultMap="ChatVOResultMap">
+		select
+		c.id, messages, last_active_content, last_active_time, unread, user_id,
+		receiver_id,
+		u.id as receiver_id, name, avatar, email, sex, introduce, phone, articles,
+		role_id
+		from chat as c
+		left join user as u
+		on receiver_id = u.id
+		<if test="userId != null">
+			where user_id = #{userId,jdbcType=INTEGER}
+		</if>
+		<if test="page != null">
+			limit #{page.start,jdbcType=INTEGER},
+			#{page.size,jdbcType=INTEGER}
+		</if>
+	</select>
+</mapper>

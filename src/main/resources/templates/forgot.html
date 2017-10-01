@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+<meta charset="utf-8"></meta>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+<title>找回密码</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+<link rel="shortcut icon" href="favicon.ico"/>
+<link rel="stylesheet" href="css/bootstrap.min.css"/>
+<link rel="stylesheet" href="css/animate.css"/>
+<link href="css/link.css" rel="stylesheet" type="text/css" />
+<link href="css/forgot_style.css" rel="stylesheet" type="text/css" />
+<link href="css/common.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div class="aw-top-menu-wrap" th:include="fragments :: header"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+
+				<!-- Start Sign In Form -->
+				<form action="forgot" class="fh5co-form animate-box" method="post"
+					data-animate-effect="fadeIn">
+					<h2>找 回 密 码</h2>
+					<div class="form-group">
+						<div class="alert alert-success" role="alert">邮件已发送到邮箱。</div>
+					</div>
+					<div class="form-group">
+						<label for="email" class="sr-only">邮箱</label> 
+						<input type="email"
+							class="form-control" id="email" placeholder="邮箱" name="sendTo"
+							autocomplete="off"/>
+					</div>
+					<div class="form-group">
+						<p>
+							<a href="login.html">登 录</a> or <a href="register.html">注 册</a>
+						</p>
+					</div>
+					<div class="form-group">
+						<input type="submit" value="发送邮件" class="btn btn-primary"/>
+					</div>
+				</form>
+				<!-- END Sign In Form -->
+			</div>
+		</div>
+	</div>
+	<!-- 底部 -->
+	<div class="aw-footer-wrap" th:include="fragments :: footer"></div>
+</body>
+
+</html>

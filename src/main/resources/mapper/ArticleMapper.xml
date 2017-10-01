@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.dao.ArticleMapper">
+	<resultMap id="BaseResultMap" type="com.dgut.po.Article">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+		<result column="last_active_time" property="lastActiveTime"
+			jdbcType="TIMESTAMP" />
+		<result column="comments" property="comments" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="section_id" property="sectionId" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="com.dgut.po.Article"
+		extends="BaseResultMap">
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, title, publish_time, last_active_time, comments,
+		status, user_id,
+		section_id
+	</sql>
+	<sql id="Blob_Column_List">
+		content
+	</sql>
+	<select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+		parameterType="com.dgut.po.ArticleExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from article
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.dgut.po.ArticleExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from article
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from article
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		article
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.dgut.po.ArticleExample">
+		delete from article
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.dgut.po.Article" useGeneratedKeys="true" keyProperty="id">
+		insert into article (id,
+		title, publish_time,
+		last_active_time, comments, status,
+		user_id,
+		section_id, content
+		)
+		values (#{id,jdbcType=INTEGER},
+		#{title,jdbcType=VARCHAR},
+		#{publishTime,jdbcType=TIMESTAMP},
+		#{lastActiveTime,jdbcType=TIMESTAMP}, #{comments,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},
+		#{userId,jdbcType=INTEGER},
+		#{sectionId,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.dgut.po.Article" useGeneratedKeys="true" keyProperty="id" >
+		insert into article
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="publishTime != null">
+				publish_time,
+			</if>
+			<if test="lastActiveTime != null">
+				last_active_time,
+			</if>
+			<if test="comments != null">
+				comments,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="sectionId != null">
+				section_id,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="publishTime != null">
+				#{publishTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastActiveTime != null">
+				#{lastActiveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="comments != null">
+				#{comments,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="sectionId != null">
+				#{sectionId,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.dgut.po.ArticleExample"
+		resultType="java.lang.Integer">
+		select count(*) from article
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update article
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.title != null">
+				title = #{record.title,jdbcType=VARCHAR},
+			</if>
+			<if test="record.publishTime != null">
+				publish_time = #{record.publishTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.lastActiveTime != null">
+				last_active_time =
+				#{record.lastActiveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.comments != null">
+				comments = #{record.comments,jdbcType=INTEGER},
+			</if>
+			<if test="record.status != null">
+				status = #{record.status,jdbcType=INTEGER},
+			</if>
+			<if test="record.userId != null">
+				user_id = #{record.userId,jdbcType=INTEGER},
+			</if>
+			<if test="record.sectionId != null">
+				section_id = #{record.sectionId,jdbcType=INTEGER},
+			</if>
+			<if test="record.content != null">
+				content = #{record.content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExampleWithBLOBs" parameterType="map">
+		update article
+		set id = #{record.id,jdbcType=INTEGER},
+		title =
+		#{record.title,jdbcType=VARCHAR},
+		publish_time =
+		#{record.publishTime,jdbcType=TIMESTAMP},
+		last_active_time =
+		#{record.lastActiveTime,jdbcType=TIMESTAMP},
+		comments =
+		#{record.comments,jdbcType=INTEGER},
+		status =
+		#{record.status,jdbcType=INTEGER},
+		user_id =
+		#{record.userId,jdbcType=INTEGER},
+		section_id =
+		#{record.sectionId,jdbcType=INTEGER},
+		content =
+		#{record.content,jdbcType=LONGVARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update article
+		set id = #{record.id,jdbcType=INTEGER},
+		title =
+		#{record.title,jdbcType=VARCHAR},
+		publish_time =
+		#{record.publishTime,jdbcType=TIMESTAMP},
+		last_active_time =
+		#{record.lastActiveTime,jdbcType=TIMESTAMP},
+		comments =
+		#{record.comments,jdbcType=INTEGER},
+		status =
+		#{record.status,jdbcType=INTEGER},
+		user_id =
+		#{record.userId,jdbcType=INTEGER},
+		section_id =
+		#{record.sectionId,jdbcType=INTEGER}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dgut.po.Article">
+		update article
+		<set>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="publishTime != null">
+				publish_time = #{publishTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastActiveTime != null">
+				last_active_time = #{lastActiveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="comments != null">
+				comments = #{comments,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="sectionId != null">
+				section_id = #{sectionId,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dgut.po.Article">
+		update
+		article
+		set title = #{title,jdbcType=VARCHAR},
+		publish_time =
+		#{publishTime,jdbcType=TIMESTAMP},
+		last_active_time =
+		#{lastActiveTime,jdbcType=TIMESTAMP},
+		comments =
+		#{comments,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
+		user_id = #{userId,jdbcType=INTEGER},
+		section_id =
+		#{sectionId,jdbcType=INTEGER},
+		content =
+		#{content,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dgut.po.Article">
+		update article
+		set
+		title = #{title,jdbcType=VARCHAR},
+		publish_time =
+		#{publishTime,jdbcType=TIMESTAMP},
+		last_active_time =
+		#{lastActiveTime,jdbcType=TIMESTAMP},
+		comments =
+		#{comments,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
+		user_id = #{userId,jdbcType=INTEGER},
+		section_id =
+		#{sectionId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- ***************************** -->
+	<resultMap type="com.dgut.vo.ArticleVO" id="ArticleVOResultMap"
+		extends="ResultMapWithBLOBs">
+		<association property="author" javaType="com.dgut.po.User">
+			<id column="author_id" property="id" jdbcType="INTEGER" />
+			<result column="name" property="name" jdbcType="VARCHAR" />
+			<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+			<result column="email" property="email" jdbcType="VARCHAR" />
+			<result column="password" property="password" jdbcType="VARCHAR" />
+			<result column="sex" property="sex" jdbcType="VARCHAR" />
+			<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+			<result column="phone" property="phone" jdbcType="VARCHAR" />
+			<result column="articles" property="articles" jdbcType="INTEGER" />
+			<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+	<select id="selectArticleVOs" resultMap="ArticleVOResultMap">
+		select
+		a.id, title, publish_time, last_active_time, comments, status,
+		user_id
+		, section_id, content
+		, u.id as author_id , name, avatar, email,
+		sex, introduce, phone,
+		articles, role_id
+		<!-- author -->
+		from article as a
+		left join user as u
+		on user_id = u.id
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+		<if test="page != null">
+			limit #{page.start,jdbcType=INTEGER},
+			#{page.size,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectArticleVO" resultMap="ArticleVOResultMap">
+		select
+		a.id, title, publish_time, last_active_time, comments, status,
+		user_id, section_id, content, u.id as author_id 
+		, name, avatar, email,sex, introduce, phone,articles,role_id
+		<!-- author -->
+		from article as a
+		left join user as u
+		on user_id = u.id
+		where a.id = #{articleId,jdbcType=INTEGER}
+	</select>
+</mapper>
