@@ -207,28 +207,6 @@ public class UserController {
 	}
 
 	/**
-	 * @Title: getResetPasswordPage
-	 * @Description: 获取修改密码页面
-	 * @return String
-	 * @throws
-	 */
-	@RequestMapping(path = { "resetPassword" }, method = { RequestMethod.GET })
-	public String getResetPasswordPage() {
-		return "";
-	}
-
-	/**
-	 * @Title: resetPassword
-	 * @Description: 提交修改的密码表单信息，更新密码
-	 * @return String
-	 * @throws
-	 */
-	@RequestMapping(path = { "resetPassword" }, method = { RequestMethod.POST })
-	public String resetPassword() {
-		return "";
-	}
-
-	/**
 	 * @Title: getHomepagePage
 	 * @Description: 获取个人主页页面
 	 * @return String

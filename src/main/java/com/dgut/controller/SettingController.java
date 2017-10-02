@@ -57,11 +57,13 @@ public class SettingController {
 				user.setPassword(MD5Util.encrypt(oldPassword));
 				List<UserVO> users = userService.getUsers(null, user);
 				if (users.size() > 0) {
+					System.out.println("密码正确");
 					users.get(0).setPassword(MD5Util.encrypt(newPassword));
 					userService.updateUser(users.get(0));
 					subject.logout();
 					return "redirect:/login";
 				}
+				System.out.println("密码不正确");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
