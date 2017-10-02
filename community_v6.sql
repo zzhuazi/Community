@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50631
 File Encoding         : 65001
 
-Date: 2017-09-26 15:54:49
+Date: 2017-10-02 21:08:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,7 +30,7 @@ CREATE TABLE `article` (
   `user_id` int(10) unsigned NOT NULL,
   `section_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for chat
@@ -45,7 +45,7 @@ CREATE TABLE `chat` (
   `user_id` int(10) unsigned NOT NULL,
   `receiver_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for comment
@@ -54,12 +54,12 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `content` varchar(255) NOT NULL,
-  `publish_time` datetime NOT NULL,
+  `publish_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `replies` int(11) NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `article_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for message
@@ -73,7 +73,7 @@ CREATE TABLE `message` (
   `receiver_id` int(11) NOT NULL,
   `sender_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for notification
@@ -88,7 +88,7 @@ CREATE TABLE `notification` (
   `sender_id` int(10) unsigned NOT NULL,
   `receiver_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for permission
@@ -98,7 +98,7 @@ CREATE TABLE `permission` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for reply
@@ -112,7 +112,7 @@ CREATE TABLE `reply` (
   `comment_id` int(10) unsigned NOT NULL,
   `replied_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for role
@@ -122,7 +122,7 @@ CREATE TABLE `role` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for role_permission
@@ -146,7 +146,7 @@ CREATE TABLE `section` (
   `articles` int(11) NOT NULL,
   `last_publish_article_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for user
@@ -164,4 +164,4 @@ CREATE TABLE `user` (
   `articles` int(11) NOT NULL,
   `role_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
