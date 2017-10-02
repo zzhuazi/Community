@@ -12,10 +12,15 @@
 <script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="js/bootstrap.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jsrender.min.js"></script>
-<script th:inline="javascript">  
-	var userVOId = [[${userVO.id}]];
-	var online = [[${null != session.user ? true : false}]];
-	console.log("online : " + online);
+<script type="text/javascript" src="js/read-url.js"></script>
+<script th:inline="javascript"> 
+	//如果当前登录的用户查看的主页是自己的主页，则online为true，用户显示删除按钮
+	var online = false;
+	if ([[${null != session.user}]]) {
+		if ([[${session.user.id}]] == request['userId']) {
+			online = true;
+		}
+	}
 </script>
 <script type="text/javascript" src="js/homepage.js"></script>
 </head>
@@ -141,8 +146,7 @@
 										</div>
 
 										<div class="mod-footer">
-											<a class="aw-load-more-content more-chats" data-page="1">
-												<input type="hidden" id="page" value="1" />
+											<a class="aw-load-more-content more-comments">
 												<span>更多...</span>
 											</a>
 										</div>
@@ -176,7 +180,7 @@
 			<i class="icon icon-reply"></i>
 			<a>{{:replies}}</a>
 		</span>
-		{{if #parent.parent.data.online}}
+		{{if #parent.parent.data.online }}
 		<p class="text-color-999">
 			<span class="pull-right">
 				<a class="text-color-999 delete" data-id="{{:id}}" href="javascript:void(0)" >删除</a>

@@ -1,4 +1,4 @@
-var page =1;
+var commentPage =1;
 function sendMessage(userId) {
 	$("#sendMessage").modal({
 		backdrop : "static"
@@ -22,25 +22,43 @@ $(function(){
 		$("div#comments").removeClass("active");
 		$("div#comments").addClass("active");
 	});
-	$.ajax({
-		type : "post",
-		url : "/commentsPage",
-		data : {
-			currentpage : page,
-			userId : userVOId
-		},
-		success: function(data){
-			console.log(data);
-			if(data['stauts'] = 'success'){
-				var comments = data['comments'];
-				var html = $("#comment").render({"comments": comments, "online": online});
-				$("div.comments-aw-profile-publish-list").append(html);
-				$("#commentsLength").val(comments.length);
-			}else{
-				alert("主评论请求失败");
+	//1. 获取主评论列表
+	var getComments = function(page, userId) {
+		$.ajax({
+			type : "post",
+			url : "/commentsPage",
+			data : {
+				currentpage : page,
+				userId : userId
+			},
+			success: function(data){
+				console.log(data);
+				if(data['stauts'] = 'success'){
+					var comments = data['comments'];
+					if(comments.length < 15) {
+						commentPage = 0;
+						$("a.more-comments").find("span").text("暂无更多评论数据");
+					}
+					var html = $("#comment").render({"comments": comments, "online": online});
+					$("div.comments-aw-profile-publish-list").append(html);
+					$("#commentsLength").val(comments.length);
+				}else{
+					alert("主评论请求失败");
+				}
 			}
+		});
+	}
+	//加载页面完成后获取第一页主评论数据
+	getComments(commentPage, request['userId']);
+	
+	//2.更多主评论按钮单击事件
+	$("a.more-comments").click(function(){
+		if (commentPage > 0) {
+			commentPage++;
+			getComments(commentPage, request['userId']);
 		}
-	});
+	})
+	
 });
 //1.主评论删除按钮单击事件
 $(document).on('click', "a.delete", function(){
